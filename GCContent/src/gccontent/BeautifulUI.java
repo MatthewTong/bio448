@@ -7,7 +7,6 @@ package gccontent;
 import java.io.File;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
-import java.text.DecimalFormat;
 
 /**
  *

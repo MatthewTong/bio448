@@ -125,6 +125,16 @@ public class BeautifulUI extends javax.swing.JFrame {
         console.setText("");
         int windowSize = (Integer)windowSizeUI.getValue();
         int stepSize = (Integer)stepSizeUI.getValue();
+        
+        if (windowSize == 0) {
+            windowSize = 100;
+            console.append("Adjusted Window Size to 100 due to it having a 0 value\n");
+        }
+        
+        if (stepSize == 0) {
+            stepSize = 100;
+            console.append("Adjusted Step Size to 100 due to it having a 0 value\n");
+        }
         File file = jFileChooser1.getSelectedFile();
         System.out.println(windowSize);
         System.out.println(stepSize);

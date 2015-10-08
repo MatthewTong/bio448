@@ -5,19 +5,23 @@
 package gccontent;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
 
 /**
  *
  * @author mtong01
  */
 public class BeautifulUI extends javax.swing.JFrame {
-
+    private ArrayList<InfoHolder> list;
     /**
      * Creates new form BeautifulUI
      */
     public BeautifulUI() {
+        list = new ArrayList<InfoHolder>();
         initComponents();
     }
 
@@ -150,6 +154,8 @@ public class BeautifulUI extends javax.swing.JFrame {
                     sequence += line;
             }
             console.append(gcFrames(sequence, windowSize, stepSize));
+            writeToFile(file.getName());
+            list.clear();
             
             /*DecimalFormat myFormatter = new DecimalFormat("###.##");
             String output = myFormatter.format(percent);
@@ -165,6 +171,22 @@ public class BeautifulUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jFileChooser1ActionPerformed
 
+    private void writeToFile(String name) {
+        String n = (name.split("\\."))[0];
+        try {
+            PrintWriter writer = new PrintWriter(n + ".csv", "UTF-8");
+            writer.print("Starting Position of Window, %GC, # of N's\n");
+            for (InfoHolder i : list) {
+                writer.print(i.pos + ", " + i.gcContent + ", " + i.nCount + "\n");
+            }
+            writer.close();
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            console.append(e.toString());
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -200,7 +222,7 @@ public class BeautifulUI extends javax.swing.JFrame {
         });
     }
     
-    public static float gcContentWindow(String s, int index, int width) {
+    public float gcContentWindow(String s, int index, int width) {
 	    if (s.length() == 0) {
 		return 0.0f;
 	    }
@@ -218,7 +240,7 @@ public class BeautifulUI extends javax.swing.JFrame {
 	    return gcCount / (float)l;
 	}
     
-    public static int nContentWindow(String s, int index, int width) {
+    public int nContentWindow(String s, int index, int width) {
 	    if (s.length() == 0) {
 		return 0;
 	    }
@@ -236,7 +258,7 @@ public class BeautifulUI extends javax.swing.JFrame {
 	    return gcCount;
 	}
 
-	public static String gcFrames(String s, int windowWidth, int step) {
+	public String gcFrames(String s, int windowWidth, int step) {
             s = s.toUpperCase();
 	    int len = s.length();
 	    StringBuilder result = new StringBuilder("position    percent_content    number_of_n's\n");
@@ -246,6 +268,8 @@ public class BeautifulUI extends javax.swing.JFrame {
 	    while (len > 0) {
 		float gcContent = gcContentWindow(s, start, windowWidth);
                 int numNs = nContentWindow(s, start, windowWidth);
+                InfoHolder info = new InfoHolder(start, toPercentage(gcContent), numNs);
+                list.add(info);
 		result.append(start).append("\t").append(toPercent(gcContent)).append("\t").append(numNs).append("\n");
 //		result.append(gcContent).append("|");
 		start += step;
@@ -255,8 +279,14 @@ public class BeautifulUI extends javax.swing.JFrame {
 	    return result.toString();
 	}
         
-        private static String toPercent(double value) {
+        private String toPercent(double value) {
             return String.format("%.2f", 100d * value) + '%';
+        }
+        
+        private double toPercentage(double value) {
+            String s = String.format("%.2f", 100d * value);
+            double d = Double.parseDouble(s);
+            return d;
         }
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -269,4 +299,16 @@ public class BeautifulUI extends javax.swing.JFrame {
     private javax.swing.JButton submitButton;
     private javax.swing.JSpinner windowSizeUI;
     // End of variables declaration//GEN-END:variables
+}
+
+class InfoHolder {
+    public int pos;
+    public double gcContent;
+    public int nCount;
+    
+    public InfoHolder(int p, double f, int n) {
+        pos = p;
+        gcContent = f;
+        nCount = n;
+    }
 }

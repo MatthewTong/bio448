@@ -1,27 +1,3 @@
-Lab 2-2: GC-Content With Attitude
-
-Team Members:
-Matthew Tong
-Kyle Lozier
-Ryan Quinlan
-
-Directions:
-   Navigate to .JAR file:
-      Use 'cd' to change directories in a terminal
-      Use 'ls' to see which files are in that directory
-      
-   Run 'java -jar GCContent.jar'
-      JAVA 1.8 is required to run this.
-   
-   In Application:
-      Use the file explorer to select your CORRECT test file
-      Set the window size and step size
-      Hit submit
-      A CSV file will be generated with your expected results and also the results will be
-        displayed in the application's console
-        
-        
-
 ========================
 BUILD OUTPUT DESCRIPTION
 ========================
@@ -35,7 +11,7 @@ JAR files manifest file (MANIFEST.MF).
 To run the project from the command line, go to the dist folder and
 type the following:
 
-java -jar "GCContent.jar" 
+java -jar "lab3.jar" 
 
 To distribute this project, zip up the dist folder (including the lib folder)
 and distribute the ZIP file.

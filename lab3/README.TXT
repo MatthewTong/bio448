@@ -1,4 +1,4 @@
-Lab 2-2: GC-Content With Attitude
+Lab 3: Gene Density and Stuff
 
 Team Members:
 Matthew Tong
@@ -10,17 +10,19 @@ Directions:
       Use 'cd' to change directories in a terminal
       Use 'ls' to see which files are in that directory
       
-   Run 'java -jar GCContent.jar'
-      JAVA 1.8 is required to run this.
+   Run 'java -jar lab3.jar'
+      JAVA 1.7 is required to run this. *1.6 might work* 
+                     -----  OR -----
+   Double click on the .jar file and it will open its GUI up. 
+   (Using command file is 'safer' declared by some OS)
    
    In Application:
-      Use the file explorer to select your CORRECT test file
-      Set the window size and step size
-      Hit submit
-      A CSV file will be generated with your expected results and also the results will be
-        displayed in the application's console
+      You need to input two files for this to work, one GTF and one FASTA.
+      Use the 'Select File' buttons to pick the corresponding files.  Make sure each is in the right spot.
+      Press the 'Generate' button to generate the CSV.
+      A CSV file will be created with your expected results.
         
-        
+   If any bugs or questions are found, email one of the team members and we shall fix the issue.
 
 ========================
 BUILD OUTPUT DESCRIPTION
@@ -35,7 +37,7 @@ JAR files manifest file (MANIFEST.MF).
 To run the project from the command line, go to the dist folder and
 type the following:
 
-java -jar "GCContent.jar" 
+java -jar "lab3.jar" 
 
 To distribute this project, zip up the dist folder (including the lib folder)
 and distribute the ZIP file.

@@ -1,0 +1,8 @@
+CPE 448 Bioinformatics
+Lab1-1
+Matthew Tong
+Matthew Versaggi
+
+To run:
+javac Lab1.java
+java Lab1 <testfile_name>

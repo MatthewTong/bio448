@@ -6,6 +6,7 @@
 package lab4;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -121,9 +122,16 @@ public class MainFrame extends javax.swing.JFrame {
         File file1 = f1;
         File file2 = f2;
         if (file1 != null && file2 != null) {
-            
+            System.out.println(handleFASTA(file1));
+            System.out.println(handleSeqFASTA(file2));
             SuffixTree tree = new SuffixTree(handleFASTA(file1));
-            System.out.println(tree.search(handleFASTA(file2)));
+            System.out.println(tree);
+            for (String s : handleSeqFASTA(file2)) {
+                System.out.println(tree.search(s));
+                System.out.println(tree.search(reverseCompliment(s)));
+            }
+            
+            
             //InfoHolder i = lab.start(file1, file2);
             //writeToFile(file1.getName(), i);
         }
@@ -148,6 +156,27 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     
+    private String reverseCompliment(String s) {
+        String str = "";
+        
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == 'A') {
+                str = 'T' + str;
+            }
+            else if (s.charAt(i) == 'T') {
+                str = 'A' + str;
+            }
+            else if (s.charAt(i) == 'C') {
+                str = 'G' + str;
+            }
+            else if (s.charAt(i) == 'G') {
+                str = 'C' + str;
+            }
+        }
+        return str;
+    }
+
+    
     public String handleFASTA(File file) {
         String str = null;
         try {
@@ -165,6 +194,34 @@ public class MainFrame extends javax.swing.JFrame {
         }
         
         return str;
+    }
+    
+    public ArrayList<String> handleSeqFASTA(File file) {
+        ArrayList<String> strList = new ArrayList<String>();
+        String str = null;
+        try {
+            Scanner scan = new Scanner(new FileReader(file));
+            str = "";
+            while (scan.hasNextLine()) {
+                String s = scan.nextLine();
+                if (s.length() > 0 && s.charAt(0) == '>') {
+                    continue;
+                }
+                else if (s.equals("") || s.trim().equals("")) {
+                    strList.add(str);
+                    str = "";
+                }
+                else {
+                    str += s; //Line to search for
+                }
+            }
+            strList.add(str);
+        } 
+        catch (FileNotFoundException e) {
+            System.err.println(e.getMessage());
+        }
+        
+        return strList;
     }
     
     /*private void writeToFile(String name, InfoHolder i) {

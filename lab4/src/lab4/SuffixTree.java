@@ -12,6 +12,7 @@ public class SuffixTree {
     private static final String TERMINAL_CHAR = "$";
 
     private Node root;
+    private Boolean NHappened = false;
 
     public SuffixTree(String sequence) {
         root = new Node();
@@ -21,9 +22,57 @@ public class SuffixTree {
         }
     }
 
+    public List<String> perms(String s) {
+        List<String> l = new ArrayList<String>();
+        l.add(s);
+        for (int i = 0; i < l.size();) {
+            String c = l.get(i);
+            if (c.contains("N")) {
+                l.add(c.replaceFirst("N", "A"));
+                l.add(c.replaceFirst("N", "G"));
+                l.add(c.replaceFirst("N", "T"));
+                l.add(c.replaceFirst("N", "C"));
+                l.remove(c);
+                NHappened = true;
+            } else if (c.contains("W")) {
+                l.add(c.replaceFirst("W", "A"));
+                l.add(c.replaceFirst("W", "T"));
+                l.remove(c);
+            } else if (c.contains("S")) {
+                l.add(c.replaceFirst("S", "C"));
+                l.add(c.replaceFirst("S", "G"));
+                l.remove(c);
+            } else if (c.contains("M")) {
+                l.add(c.replaceFirst("M", "C"));
+                l.add(c.replaceFirst("M", "A"));
+                l.remove(c);
+            } else if (c.contains("K")) {
+                l.add(c.replaceFirst("K", "T"));
+                l.add(c.replaceFirst("K", "G"));
+                l.remove(c);
+            } else if (c.contains("R")) {
+                l.add(c.replaceFirst("R", "A"));
+                l.add(c.replaceFirst("R", "G"));
+                l.remove(c);
+            } else if (c.contains("Y")) {
+                l.add(c.replaceFirst("Y", "C"));
+                l.add(c.replaceFirst("Y", "T"));
+                l.remove(c);
+            } else {
+                i++;
+            }
+        }
+        return l;
+    }
+
     public Set<Integer> search(String toSearch) {
-        List<Integer> results = root.search(toSearch);
-        Set<Integer> filtered = new HashSet<Integer>(results);
+        List<String> p = perms(toSearch);
+        List<Integer> total = new ArrayList<Integer>();
+        for (int i = 0; i < p.size(); i++) {
+            List<Integer> results = root.search(p.get(i));
+            total.addAll(results);
+        }
+        Set<Integer> filtered = new HashSet<Integer>(total);
 
         filtered.remove(-1);
 
@@ -31,7 +80,7 @@ public class SuffixTree {
     }
 
     private class Node {
-        String val;
+        String val = null;
         int pos = -1;
         List<Node> children = new ArrayList<Node>();
 
@@ -60,6 +109,11 @@ public class SuffixTree {
             } else {
                 Node left = new Node();
                 Node right = new Node();
+                //Node center = new Node();
+                
+                //center.val = "$";
+                //center.pos = pos;
+                //this.children.add(center);
 
                 left.val = val.substring(idx);
                 this.val = val.substring(0, idx);
@@ -75,7 +129,7 @@ public class SuffixTree {
 
         public List<Integer> search(String toSearch) {
             int idx = getDifferenceIdx(val, toSearch);
-
+            
             if (idx >= toSearch.length()) {
                 return curPositions();
             } else if (idx == val.length()) {
@@ -137,6 +191,10 @@ public class SuffixTree {
                 string.append('\t');
             }
 
+            if (children.size() == 0) {
+                string.append("(" + pos + ")");
+            }
+            
             if (val != null && val.length() > 0) {
                 string.append(val).append('\n');
             } else {
@@ -156,7 +214,7 @@ public class SuffixTree {
         return root.toString();
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         SuffixTree tree = new SuffixTree("ATTATCATGATU");
 
         System.out.println(tree);
@@ -164,5 +222,5 @@ public class SuffixTree {
         System.out.println(tree.search("ATT"));         // expect 0
         System.out.println(tree.search("AT"));          // expect 0, 3, 6, 9
         System.out.println(tree.search("W"));           // expect []
-    }
+    }*/
 }
